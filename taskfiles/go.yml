@@ -1,0 +1,32 @@
+version: "3"
+
+includes:
+  gen: gen.yml
+
+tasks:
+  tidy:
+    cmds:
+      - go mod tidy
+
+  lint:
+    deps:
+      - gen:lint
+    cmds:
+      - bin/golangci-lint run --deadline=10m
+
+  mock:
+    cmds:
+      - go generate ./...
+
+  test:
+    deps:
+      - mock
+    cmds:
+      - go test ./...
+
+  coverage:
+    deps:
+      - mock
+    cmds:
+      - go test -coverprofile=coverage.out ./...
+      - go tool cover -html=coverage.out

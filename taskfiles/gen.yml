@@ -1,0 +1,12 @@
+version: "3"
+
+tasks:
+  bin:
+    cmds:
+      - mkdir -p bin
+
+  lint:
+    deps:
+      - bin
+    cmds:
+      - "[ -f bin/golangci-lint ] || curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b bin v1.53.3"

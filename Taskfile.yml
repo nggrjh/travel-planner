@@ -1,8 +1,31 @@
-version: '3'
+version: "3"
+
+includes:
+  docker: taskfiles/docker.yml
+  go: taskfiles/go.yml
 
 tasks:
-
   run:
-    cmds:
-      - go mod tidy
-      - docker-compose up -d --build
+    deps:
+      - go:tidy
+      - docker:up
+
+  stop:
+    deps:
+      - docker:down
+
+  lint:
+    deps:
+      - go:lint
+
+  mock:
+    deps:
+      - go:mock
+
+  test:
+    deps:
+      - go:test
+
+  coverage:
+    deps:
+      - go:coverage

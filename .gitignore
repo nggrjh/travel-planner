@@ -1,0 +1,8 @@
+# Compiled binary files
+bin/
+
+# Ignore JetBrains IDE settings
+.idea/
+
+# macOS specific files
+.DS_Store
