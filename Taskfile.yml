@@ -1,0 +1,8 @@
+version: '3'
+
+tasks:
+
+  run:
+    cmds:
+      - go mod tidy
+      - docker-compose up -d --build
