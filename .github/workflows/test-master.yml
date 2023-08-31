@@ -1,24 +1,22 @@
 name: Run Tests on Master Push
 
 on:
-  push:
-    branches:
-      - master
+    push:
+        branches:
+        - master
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Install Task
-        run: |
-            mkdir -p $HOME/bin
-            curl -sL https://taskfile.dev/install.sh | BINDIR=$HOME/bin sh
-            echo "export PATH=\$PATH:\$HOME/bin" >> $HOME/.bashrc
-            source $HOME/.bashrc
-
-      - name: Run Tests
-        run: task test
+    build:
+      runs-on: ubuntu-latest
+  
+      steps:
+        - name: Checkout Repository
+          uses: actions/checkout@v2
+  
+        - name: Install Taskfile
+          run: |
+            curl -sL https://taskfile.dev/install.sh | sh
+            export PATH=$PATH:$HOME/.task/bin
+  
+        - name: Run tests
+          run: task test
