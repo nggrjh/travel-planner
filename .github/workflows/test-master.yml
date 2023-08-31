@@ -6,7 +6,7 @@ on:
         - master
 
 jobs:
-    build:
+    test:
       runs-on: ubuntu-latest
   
       steps:
@@ -16,6 +16,8 @@ jobs:
         - name: Install Taskfile
           run: |
             curl -sL https://taskfile.dev/install.sh | sh
+            ls -al
+            pwd
             echo 'export PATH=$PATH:$HOME/.task/bin' >> $HOME/.bashrc
             source $HOME/.bashrc
   
