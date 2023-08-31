@@ -18,8 +18,8 @@ jobs:
             curl -sL https://taskfile.dev/install.sh | sh
             ls -al
             pwd
-            ls bin
-            ls ./bin
+            ls -al bin
+            ls -al ./bin
             ./bin/task
             echo 'export PATH=$PATH:$HOME/.task/bin' >> $HOME/.bashrc
             source $HOME/.bashrc
