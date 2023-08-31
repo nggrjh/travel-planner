@@ -6,3 +6,6 @@ bin/
 
 # macOS specific files
 .DS_Store
+
+# Test coverage file
+*.out
