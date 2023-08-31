@@ -8,16 +8,23 @@ tasks:
     deps:
       - gen:bin
     cmds:
-      - "[ -f bin/docker-compose ] || curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o bin/docker-compose && chmod +x bin/docker-compose"
+      - "[ -f ./bin/docker-compose ] || curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o ./bin/docker-compose && chmod +x ./bin/docker-compose"
+
+  cleanup: 
+    cmds:
+      - docker rm $(docker ps -a -q -f status=exited) 2> /dev/null || true
+      - docker rmi $(docker images --filter "dangling=true" -q --no-trunc) 2> /dev/null || true
 
   up:
     deps:
       - setup
     cmds:
-      - bin/docker-compose up -d --build
+      - ./bin/docker-compose up -d --build
+      - defer: task docker:cleanup
 
   down:
     deps:
       - setup
     cmds:
-      - bin/docker-compose down
+      - ./bin/docker-compose down
+      - defer: task docker:cleanup

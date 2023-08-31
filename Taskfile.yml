@@ -1,6 +1,7 @@
 version: "3"
 
 includes:
+  db: taskfiles/db.yml
   docker: taskfiles/docker.yml
   go: taskfiles/go.yml
 

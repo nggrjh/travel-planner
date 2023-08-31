@@ -12,7 +12,7 @@ tasks:
     deps:
       - gen:lint
     cmds:
-      - bin/golangci-lint run --deadline=10m
+      - ./bin/golangci-lint run --deadline=10m
 
   mock:
     cmds:
