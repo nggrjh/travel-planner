@@ -9,6 +9,8 @@ tasks:
     deps:
       - go:tidy
       - docker:up
+    cmds:
+      - docker logs -f travel-planner
 
   stop:
     deps:
@@ -29,3 +31,9 @@ tasks:
   coverage:
     deps:
       - go:coverage
+
+  check:
+    deps:
+      - go:tidy
+      - go:test
+      - go:lint

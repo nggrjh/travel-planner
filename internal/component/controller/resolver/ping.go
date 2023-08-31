@@ -8,17 +8,17 @@ func NewPing() *ping {
 	return &ping{}
 }
 
-func (r *ping) Name() string {
+func (p *ping) Name() string {
 	return "ping"
 }
 
-func (r *ping) Field() *graphql.Field {
+func (p *ping) Field() *graphql.Field {
 	return &graphql.Field{
 		Type:    graphql.String,
-		Resolve: r.resolve,
+		Resolve: p.resolve,
 	}
 }
 
-func (r *ping) resolve(p graphql.ResolveParams) (interface{}, error) {
+func (p *ping) resolve(_ graphql.ResolveParams) (interface{}, error) {
 	return "PONG!", nil
 }

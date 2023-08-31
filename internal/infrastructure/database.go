@@ -9,16 +9,16 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
-type IDatabase interface {
-	Close()
+type Database interface {
 	AutoMigrate(values ...interface{})
+	Close()
 }
 
 type database struct {
 	conn *gorm.DB
 }
 
-func NewDatabaseConnection() (IDatabase, error) {
+func NewDatabaseConnection() (*database, error) {
 	db, err := gorm.Open(
 		"postgres",
 		fmt.Sprintf(
@@ -35,12 +35,12 @@ func NewDatabaseConnection() (IDatabase, error) {
 	return &database{conn: db}, nil
 }
 
+func (db *database) AutoMigrate(values ...interface{}) {
+	db.conn = db.conn.AutoMigrate(values...)
+}
+
 func (db *database) Close() {
 	if err := db.conn.Close(); err != nil {
 		log.Printf("Failed to close database: %s\n", err.Error())
 	}
-}
-
-func (db *database) AutoMigrate(values ...interface{}) {
-	db.conn = db.conn.AutoMigrate(values...)
 }

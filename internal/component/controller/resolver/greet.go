@@ -13,18 +13,23 @@ func NewGreet() *greet {
 	return &greet{}
 }
 
-func (r *greet) Name() string {
+func (g *greet) Name() string {
 	return "greet"
 }
 
-func (r *greet) Field() *graphql.Field {
+func (g *greet) Field() *graphql.Field {
 	return &graphql.Field{
-		Type:    graphql.String,
-		Resolve: r.resolve,
+		Type: graphql.String,
+		Args: graphql.FieldConfigArgument{
+			"name": &graphql.ArgumentConfig{
+				Type: graphql.String,
+			},
+		},
+		Resolve: g.resolve,
 	}
 }
 
-func (r *greet) resolve(p graphql.ResolveParams) (interface{}, error) {
+func (g *greet) resolve(p graphql.ResolveParams) (interface{}, error) {
 	name, ok := p.Args["name"].(string)
 	if !ok {
 		return nil, errors.New("missing parameter")
