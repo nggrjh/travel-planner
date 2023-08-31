@@ -14,7 +14,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install Task
-        run: curl -sL https://taskfile.dev/install.sh | sh
+        run: 
+            curl -sL https://taskfile.dev/install.sh | sh
+            export PATH="$PATH:$HOME/.local/bin"
 
       - name: Run Tests
         run: task test
