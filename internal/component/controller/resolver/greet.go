@@ -9,12 +9,19 @@ import (
 
 type greet struct{}
 
-func NewGreet() IResolve {
+func NewGreet() *greet {
 	return &greet{}
 }
 
-func (r *greet) Resolve() graphql.FieldResolveFn {
-	return r.resolve
+func (r *greet) Name() string {
+	return "greet"
+}
+
+func (r *greet) Field() *graphql.Field {
+	return &graphql.Field{
+		Type:    graphql.String,
+		Resolve: r.resolve,
+	}
 }
 
 func (r *greet) resolve(p graphql.ResolveParams) (interface{}, error) {

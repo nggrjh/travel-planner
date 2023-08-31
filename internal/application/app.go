@@ -8,13 +8,18 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/nggrjh/travel-planner/internal/component/controller/handler"
 	"github.com/nggrjh/travel-planner/internal/infrastructure"
 )
 
 type app struct {
 	Database infrastructure.IDatabase
+	Controller  controller
+}
 
-	GraphQLHandler http.Handler
+type controller struct {
+	GraphQL http.Handler
+	Ping    http.Handler
 }
 
 func New() (*app, error) {
@@ -30,8 +35,10 @@ func New() (*app, error) {
 
 	return &app{
 		Database: dbConn,
-
-		GraphQLHandler: graphQLHandler,
+		Controller: controller{
+			GraphQL: graphQLHandler,
+			Ping:    handler.NewPing(),
+		},
 	}, nil
 }
 
@@ -42,13 +49,8 @@ func (a *app) Close() {
 func (a *app) Start() {
 	a.Database.AutoMigrate()
 
-	http.Handle("/graphql", a.GraphQLHandler)
-	http.Handle("/ping", http.HandlerFunc(
-		func(w http.ResponseWriter, r *http.Request) {
-			w.Write([]byte("PONG!"))
-			w.WriteHeader(http.StatusOK)
-		},
-	))
+	http.Handle("/graphql", a.Controller.GraphQL)
+	http.Handle("/ping", a.Controller.Ping)
 
 	go func() {
 		log.Fatal(http.ListenAndServe(":8080", nil))

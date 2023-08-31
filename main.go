@@ -13,9 +13,6 @@ func main() {
 	}
 	defer app.Close()
 
-	// AutoMigrate creates tables for registered models
-	// db.AutoMigrate(&models.User{})
-
 	app.Start()
 
 	app.WaitForShutdown()

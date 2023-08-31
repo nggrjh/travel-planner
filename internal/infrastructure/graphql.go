@@ -5,12 +5,13 @@ import (
 
 	"github.com/graphql-go/graphql"
 	"github.com/graphql-go/handler"
-	"github.com/nggrjh/travel-planner/internal/component/controller"
+
+	"github.com/nggrjh/travel-planner/internal/component/controller/resolver"
 )
 
 func NewGraphQLHandler() (http.Handler, error) {
-	pingResolver := controller.NewPingResolver()
-	greetResolver := controller.NewGreetResolver()
+	pingResolver := resolver.NewPing()
+	greetResolver := resolver.NewGreet()
 
 	rootQuery := graphql.NewObject(
 		graphql.ObjectConfig{
