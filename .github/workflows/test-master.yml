@@ -16,7 +16,8 @@ jobs:
         - name: Install Taskfile
           run: |
             curl -sL https://taskfile.dev/install.sh | sh
-            export PATH=$PATH:$HOME/.task/bin
+            echo 'export PATH=$PATH:$HOME/.task/bin' >> $HOME/.bashrc
+            source $HOME/.bashrc
   
         - name: Run tests
           run: task test
