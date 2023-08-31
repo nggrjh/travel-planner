@@ -1,0 +1,20 @@
+name: Run Tests on Master Push
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Install Task
+        run: curl -sL https://taskfile.dev/install.sh | sh
+
+      - name: Run Tests
+        run: task test
