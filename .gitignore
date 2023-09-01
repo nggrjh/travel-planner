@@ -9,3 +9,6 @@ bin/
 
 # Test coverage file
 *.out
+
+# Database mount
+db/mount/

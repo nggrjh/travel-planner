@@ -4,6 +4,14 @@ includes:
   docker: docker.yml
 
 tasks:
+  wait:
+    cmds:
+      - sleep 2
+
+  test:cleanup:
+    cmds:
+      - rm -rf ./db/mount
+
   test:
     vars:
       DB_SCHEMA: pgtest
@@ -14,6 +22,7 @@ tasks:
       - docker:setup
     cmds:
       - ./bin/docker-compose -f ./config/test/docker-compose.yml up -d pgtest
+      - task db:wait
       - ./bin/docker-compose -f ./config/test/docker-compose.yml up migrate
       - ./bin/docker-compose -f ./config/test/docker-compose.yml up pgtap
       - ./bin/docker-compose -f ./config/test/docker-compose.yml down

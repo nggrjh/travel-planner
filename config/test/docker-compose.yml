@@ -9,13 +9,25 @@ services:
       POSTGRES_USER: pgtest
       POSTGRES_PASSWORD: pgtest
     volumes:
-      - pgtest:/var/lib/postgresql/data
+      - ../../db/mount/data:/var/lib/postgresql/data
+    networks:
+      - test
+
+  wait:
+    image: waisbrot/wait
+    container_name: wait
+    environment:
+      TIMEOUT: 600
+    depends_on:
+      - pgtest
     networks:
       - test
 
   migrate:
     image: migrate/migrate
     container_name: migrate
+    depends_on:
+      - wait
     volumes:
       - ../../db/migration:/migration
     networks:
@@ -38,9 +50,6 @@ services:
       - ../../db/test:/test/
     networks:
       - test
-
-volumes:
-  pgtest:
 
 networks:
   test:
