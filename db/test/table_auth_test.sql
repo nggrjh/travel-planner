@@ -17,7 +17,7 @@ SELECT col_not_null('auth', 'email');
 
 SELECT has_column('auth', 'password');
 SELECT col_type_is('auth', 'password', 'character varying');
-SELECT col_is_null('auth', 'password');
+SELECT col_not_null('auth', 'password');
 
 SELECT has_column('auth', 'created_at');
 SELECT col_type_is('auth', 'created_at', 'timestamp without time zone');

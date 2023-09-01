@@ -2,22 +2,18 @@ version: "3"
 
 includes:
   docker: docker.yml
-  migrate: db/migrate.yml
-
-vars:
-  DB_DOCKER_NAME: pgtest
-  DB_DOCKER_PASS: pgtest
-  DB_SCHEMA: pgtest
-  DB_DIR: ./db
 
 tasks:
-
   test:
-    dir: db
+    vars:
+      DB_SCHEMA: pgtest
+      DB_USER: pgtest
+      DB_PASS: pgtest
+      TEST_FILES: test/* -v
     deps:
-      - docker:cleanup
+      - docker:setup
     cmds:
-      - docker-compose down
-      - docker-compose up -d
-      # - docker-compose run wait --rm
-      # - docker-compose run migration
+      - ./bin/docker-compose -f ./config/test/docker-compose.yml up -d pgtest
+      - ./bin/docker-compose -f ./config/test/docker-compose.yml up migrate
+      - ./bin/docker-compose -f ./config/test/docker-compose.yml up pgtap
+      - ./bin/docker-compose -f ./config/test/docker-compose.yml down

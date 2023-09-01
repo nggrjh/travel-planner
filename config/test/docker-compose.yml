@@ -1,0 +1,48 @@
+version: "3"
+
+services:
+  pgtest:
+    image: postgres:latest
+    container_name: pgtest
+    environment:
+      POSTGRES_DB: pgtest
+      POSTGRES_USER: pgtest
+      POSTGRES_PASSWORD: pgtest
+    volumes:
+      - pgtest:/var/lib/postgresql/data
+    networks:
+      - test
+
+  migrate:
+    image: migrate/migrate
+    container_name: migrate
+    volumes:
+      - ../../db/migration:/migration
+    networks:
+      - test
+    command: ["-source", "file:///migration", "-database", "postgres://pgtest:pgtest@pgtest:5432/pgtest?sslmode=disable", "up"]
+
+  pgtap:
+    image: subzerocloud/pgtap:pg12
+    container_name: pgtap
+    links:
+      - pgtest:db
+    environment:
+      - USER=pgtest
+      - PASSWORD=pgtest
+      - DATABASE=pgtest
+      - TESTS=test/* -v
+    depends_on:
+      - migrate
+    volumes:
+      - ../../db/test:/test/
+    networks:
+      - test
+
+volumes:
+  pgtest:
+
+networks:
+  test:
+    name: test
+    driver: bridge

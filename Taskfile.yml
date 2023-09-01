@@ -9,13 +9,17 @@ tasks:
   run:
     deps:
       - go:tidy
-      - docker:up
+      - go:dotenv
+      - docker:setup
     cmds:
-      - docker logs -f travel-planner
+      - ./bin/docker-compose -f config/local/docker-compose.yml up -d --remove-orphans
+      - godotenv -f ./config/local/.env go run main.go
 
   stop:
     deps:
-      - docker:down
+      - docker:setup
+    cmds:
+      - ./bin/docker-compose -f config/local/docker-compose.yml down
 
   lint:
     deps:
@@ -38,3 +42,4 @@ tasks:
       - go:tidy
       - go:test
       - go:lint
+      - db:test

@@ -19,16 +19,12 @@ type database struct {
 }
 
 func NewDatabaseConnection() (*database, error) {
-	db, err := gorm.Open(
-		"postgres",
-		fmt.Sprintf(
-			"host=%s dbname=%s user=%s password=%s sslmode=disable",
-			os.Getenv("DB_HOST"),
-			os.Getenv("DB_NAME"),
-			os.Getenv("DB_USER"),
-			os.Getenv("DB_PASS"),
-		),
+	conn := fmt.Sprintf(
+		"host=%s dbname=%s user=%s password=%s sslmode=disable",
+		os.Getenv("DB_HOST"), os.Getenv("DB_NAME"), os.Getenv("DB_USER"), os.Getenv("DB_PASS"),
 	)
+	log.Println(conn)
+	db, err := gorm.Open("postgres", conn)
 	if err != nil {
 		return nil, err
 	}

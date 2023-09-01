@@ -4,6 +4,10 @@ includes:
   gen: gen.yml
 
 tasks:
+  dotenv:
+    cmds:
+      - "[ -f godotenv ] || go install github.com/joho/godotenv/cmd/godotenv@latest"
+
   tidy:
     cmds:
       - go mod tidy
