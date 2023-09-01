@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  pgtest:
+    image: postgres:latest
+    container_name: pgtest
+    environment:
+      POSTGRES_DB: pgtest
+      POSTGRES_USER: pgtest
+      POSTGRES_PASSWORD: pgtest
+    volumes:
+      - pgtest:/var/lib/postgresql/data
+
+  wait:
+    image: waisbrot/wait
+    container_name: wait
+    environment:
+      TIMEOUT: 600
+    depends_on:
+      - pgtest
+
+  migration:
+    image: migrate/migrate
+    container_name: migration
+    volumes:
+      - ./migration:/migration
+    depends_on:
+      - wait
+    command: ["-source", "file:///migration", "-database", "postgres://pgtest:pgtest@pgtest:5432/pgtest?sslmode=disable", "up"]
+
+volumes:
+  pgtest:
