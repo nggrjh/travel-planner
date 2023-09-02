@@ -14,12 +14,14 @@ tasks:
 
   lint:
     deps:
-      - gen:lint
+      - gen:bin
     cmds:
+      - "[ -f ./bin/golangci-lint ] || curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b bin v1.53.3"
       - ./bin/golangci-lint run --deadline=10m
 
   mock:
     cmds:
+      - "[ -f mockgen ] || go install github.com/golang/mock/mockgen@v1.6.0"
       - go generate ./...
       - task go:tidy
 
