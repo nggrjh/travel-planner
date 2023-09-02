@@ -22,5 +22,5 @@ func (u *userRegistration) RegisterUser(ctx context.Context, username, email, pa
 		return err
 	}
 
-	return u.createUser.CreateUser(ctx, username, email, string(hashedPassword))
+	return u.createUser.Create(ctx, username, email, string(hashedPassword))
 }

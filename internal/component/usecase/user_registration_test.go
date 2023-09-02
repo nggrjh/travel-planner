@@ -85,7 +85,7 @@ func Test_userRegistration_RegisterUser(t *testing.T) {
 
 			if e := tt.expectInsertUser; e != nil {
 				mockCreateUser.EXPECT().
-					CreateUser(gomock.Any(), e.username, e.email, gomock.Any()).
+					Create(gomock.Any(), e.username, e.email, gomock.Any()).
 					Do(func(_ context.Context, _, _, password string) {
 						assert.Nil(t, bcrypt.CompareHashAndPassword([]byte(password), []byte(e.password)))
 					}).
