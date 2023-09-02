@@ -37,8 +37,6 @@ func (a *app) Close() {
 }
 
 func (a *app) Start() {
-	a.Database.AutoMigrate()
-
 	log.Fatal(a.RestAPI.Start())
 }
 
