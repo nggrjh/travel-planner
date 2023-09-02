@@ -5,10 +5,11 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"github.com/nggrjh/travel-planner/internal/component/repository/mock"
-	"github.com/nggrjh/travel-planner/internal/component/usecase"
 	"github.com/stretchr/testify/assert"
 	"golang.org/x/crypto/bcrypt"
+
+	"github.com/nggrjh/travel-planner/internal/component/repository/mock"
+	"github.com/nggrjh/travel-planner/internal/component/usecase"
 )
 
 func Test_userRegistration_RegisterUser(t *testing.T) {
@@ -93,7 +94,7 @@ func Test_userRegistration_RegisterUser(t *testing.T) {
 			}
 
 			u := usecase.NewUserRegistration(tt.fields.hashCost, mockCreateUser)
-			tt.wantErr(t, u.RegisterUser(context.Background(), tt.args.username, tt.args.email, tt.args.password), "RegisterUser()")
+			tt.wantErr(t, u.RegisterUser(context.Background(), tt.args.username, tt.args.email, tt.args.password), "usecase.RegisterUser()")
 		})
 	}
 }
