@@ -81,18 +81,18 @@ func Test_userRegistration_RegisterUser(t *testing.T) {
 			control := gomock.NewController(t)
 			t.Cleanup(control.Finish)
 
-			mockInsertUser := mock.NewMockInsertUser(control)
+			mockCreateUser := mock.NewMockCreateUser(control)
 
 			if e := tt.expectInsertUser; e != nil {
-				mockInsertUser.EXPECT().
-					InsertUser(gomock.Any(), e.username, e.email, gomock.Any()).
+				mockCreateUser.EXPECT().
+					CreateUser(gomock.Any(), e.username, e.email, gomock.Any()).
 					Do(func(_ context.Context, _, _, password string) {
 						assert.Nil(t, bcrypt.CompareHashAndPassword([]byte(password), []byte(e.password)))
 					}).
 					Return(e.rErr)
 			}
 
-			u := usecase.NewUserRegistration(tt.fields.hashCost, mockInsertUser)
+			u := usecase.NewUserRegistration(tt.fields.hashCost, mockCreateUser)
 			tt.wantErr(t, u.RegisterUser(context.Background(), tt.args.username, tt.args.email, tt.args.password), "RegisterUser()")
 		})
 	}

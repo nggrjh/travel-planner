@@ -4,6 +4,6 @@ import "context"
 
 //go:generate mockgen -source=interface.go -destination=mock/interface.go -package=mock
 
-type InsertUser interface {
-	InsertUser(ctx context.Context, username, email, password string) error
+type CreateUser interface {
+	CreateUser(ctx context.Context, username, email, password string) error
 }

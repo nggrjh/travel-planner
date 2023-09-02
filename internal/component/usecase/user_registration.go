@@ -9,11 +9,11 @@ import (
 
 type userRegistration struct {
 	hashCost   int
-	insertUser repository.InsertUser
+	createUser repository.CreateUser
 }
 
-func NewUserRegistration(hashCost int, insertUser repository.InsertUser) *userRegistration {
-	return &userRegistration{insertUser: insertUser}
+func NewUserRegistration(hashCost int, createUser repository.CreateUser) *userRegistration {
+	return &userRegistration{createUser: createUser}
 }
 
 func (u *userRegistration) RegisterUser(ctx context.Context, username, email, password string) error {
@@ -22,5 +22,5 @@ func (u *userRegistration) RegisterUser(ctx context.Context, username, email, pa
 		return err
 	}
 
-	return u.insertUser.InsertUser(ctx, username, email, string(hashedPassword))
+	return u.createUser.CreateUser(ctx, username, email, string(hashedPassword))
 }
