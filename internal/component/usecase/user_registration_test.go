@@ -22,7 +22,7 @@ func Test_userRegistration_RegisterUser(t *testing.T) {
 		email    string
 		password string
 	}
-	type expectInsertUser struct {
+	type expectCreateUser struct {
 		username string
 		email    string
 		password string
@@ -33,10 +33,10 @@ func Test_userRegistration_RegisterUser(t *testing.T) {
 		args    args
 		wantErr assert.ErrorAssertionFunc
 
-		expectInsertUser *expectInsertUser
+		expectCreateUser *expectCreateUser
 	}{
 		"should_return_error__" +
-			"when_InsertUser_returns_error": {
+			"when_CreateUser_returns_error": {
 			fields: fields{
 				hashCost: 18,
 			},
@@ -47,15 +47,15 @@ func Test_userRegistration_RegisterUser(t *testing.T) {
 			},
 			wantErr: assert.Error,
 
-			expectInsertUser: &expectInsertUser{
+			expectCreateUser: &expectCreateUser{
 				username: "hariiniindah",
 				email:    "hariiniindah@gmail.com",
 				password: "hariiniindah",
 				rErr:     assert.AnError,
 			},
 		},
-		"should_return_error__" +
-			"when_InsertUser_returns_nil_error": {
+		"should_return_nil_error__" +
+			"when_CreateUser_returns_nil_error": {
 			fields: fields{
 				hashCost: 18,
 			},
@@ -66,7 +66,7 @@ func Test_userRegistration_RegisterUser(t *testing.T) {
 			},
 			wantErr: assert.NoError,
 
-			expectInsertUser: &expectInsertUser{
+			expectCreateUser: &expectCreateUser{
 				username: "hariiniindah",
 				email:    "hariiniindah@gmail.com",
 				password: "hariiniindah",
@@ -84,7 +84,7 @@ func Test_userRegistration_RegisterUser(t *testing.T) {
 
 			mockCreateUser := mock.NewMockCreateUser(control)
 
-			if e := tt.expectInsertUser; e != nil {
+			if e := tt.expectCreateUser; e != nil {
 				mockCreateUser.EXPECT().
 					Create(gomock.Any(), e.username, e.email, gomock.Any()).
 					Do(func(_ context.Context, _, _, password string) {
