@@ -21,22 +21,6 @@ tasks:
     cmds:
       - ./bin/docker-compose -f config/local/docker-compose.yml down
 
-  lint:
-    deps:
-      - go:lint
-
-  mock:
-    deps:
-      - go:mock
-
-  test:
-    deps:
-      - go:test
-
-  coverage:
-    deps:
-      - go:coverage
-
   check:
     deps:
       - go:tidy

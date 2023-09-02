@@ -21,6 +21,7 @@ tasks:
   mock:
     cmds:
       - go generate ./...
+      - task go:tidy
 
   test:
     deps:
