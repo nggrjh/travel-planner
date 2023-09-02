@@ -18,4 +18,4 @@ jobs:
             curl -sL https://taskfile.dev/install.sh | sh
   
         - name: Run tests
-          run: ./bin/task test
+          run: ./bin/task go:test
