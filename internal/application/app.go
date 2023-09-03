@@ -6,45 +6,44 @@ import (
 	"os/signal"
 	"syscall"
 
-	gHandler "github.com/99designs/gqlgen/graphql/handler"
+	graphHandler "github.com/99designs/gqlgen/graphql/handler"
 	"github.com/labstack/echo/v4"
 
 	"github.com/nggrjh/travel-planner/internal/component/controller/handler"
 	"github.com/nggrjh/travel-planner/internal/component/controller/resolver"
 	"github.com/nggrjh/travel-planner/internal/component/repository/users"
 	"github.com/nggrjh/travel-planner/internal/component/usecase"
-	"github.com/nggrjh/travel-planner/internal/infrastructure/dependency"
-	"github.com/nggrjh/travel-planner/internal/infrastructure/server"
+	"github.com/nggrjh/travel-planner/internal/infrastructure/database"
 	"github.com/nggrjh/travel-planner/internal/infrastructure/server/graph"
+	"github.com/nggrjh/travel-planner/internal/infrastructure/server/restapi"
 )
 
 type app struct {
-	RestAPI  server.RestAPI
-	Database dependency.Database
+	RestAPI  restapi.RestAPI
+	Database database.Database
 }
 
 func New() (*app, error) {
-	dbConn, err := dependency.NewDatabaseConnection()
+	dbConn, err := database.New()
 	if err != nil {
 		return nil, err
 	}
 
-	restAPI, err := server.NewRestAPI()
+	restAPI, err := restapi.New()
 	if err != nil {
 		return nil, err
 	}
 
-	c := graph.Config{
+	graphConfig := graph.Config{
 		Resolvers:  resolver.NewResolver(usecase.NewUserRegistration(18, users.New(dbConn))),
 		Directives: graph.DirectiveRoot{},
 		Complexity: graph.ComplexityRoot{},
 	}
-	h := gHandler.NewDefaultServer(server.NewExecutableSchema(c))
 
 	{ // Endpoints
 		restAPI.GET("/ping", handler.NewPing().Handle())
 
-		restAPI.POST("/graphql", echo.WrapHandler(h))
+		restAPI.POST("/graphql", echo.WrapHandler(graphHandler.NewDefaultServer(graph.NewExecutableSchema(graphConfig))))
 	}
 
 	return &app{

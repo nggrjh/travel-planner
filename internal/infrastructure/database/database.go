@@ -1,4 +1,4 @@
-package dependency
+package database
 
 import (
 	"context"
@@ -30,7 +30,7 @@ type database struct {
 	conn *sql.DB
 }
 
-func NewDatabaseConnection() (*database, error) {
+func New() (*database, error) {
 	connStr := fmt.Sprintf(
 		"host=%s dbname=%s user=%s password=%s sslmode=disable",
 		os.Getenv("DB_HOST"), os.Getenv("DB_NAME"), os.Getenv("DB_USER"), os.Getenv("DB_PASS"),

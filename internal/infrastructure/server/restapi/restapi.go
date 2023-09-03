@@ -1,4 +1,4 @@
-package server
+package restapi
 
 import (
 	"log"
@@ -19,7 +19,7 @@ type restAPI struct {
 	echo *echo.Echo
 }
 
-func NewRestAPI() (*restAPI, error) {
+func New() (*restAPI, error) {
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
