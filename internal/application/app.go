@@ -15,6 +15,7 @@ import (
 	"github.com/nggrjh/travel-planner/internal/component/usecase"
 	"github.com/nggrjh/travel-planner/internal/infrastructure/dependency"
 	"github.com/nggrjh/travel-planner/internal/infrastructure/server"
+	"github.com/nggrjh/travel-planner/internal/infrastructure/server/graph"
 )
 
 type app struct {
@@ -33,10 +34,10 @@ func New() (*app, error) {
 		return nil, err
 	}
 
-	c := server.Config{
+	c := graph.Config{
 		Resolvers:  resolver.NewResolver(usecase.NewUserRegistration(18, users.New(dbConn))),
-		Directives: server.DirectiveRoot{},
-		Complexity: server.ComplexityRoot{},
+		Directives: graph.DirectiveRoot{},
+		Complexity: graph.ComplexityRoot{},
 	}
 	h := gHandler.NewDefaultServer(server.NewExecutableSchema(c))
 

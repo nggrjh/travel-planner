@@ -6,8 +6,8 @@ schema:
   - graph/*.graphql
 
 exec:
-  filename: internal/infrastructure/server/graph.go
-  package: server
+  filename: internal/infrastructure/server/graph/graph.go
+  package: graph
 
 resolver:
   layout: follow-schema

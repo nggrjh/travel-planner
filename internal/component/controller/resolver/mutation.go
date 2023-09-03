@@ -9,7 +9,7 @@ import (
 	"errors"
 
 	"github.com/nggrjh/travel-planner/internal/component/controller/resolver/model"
-	graph "github.com/nggrjh/travel-planner/internal/infrastructure/server"
+	"github.com/nggrjh/travel-planner/internal/infrastructure/server/graph"
 )
 
 // RegisterUser is the resolver for the registerUser field.
@@ -34,6 +34,6 @@ func (r *mutationResolver) RegisterUser(ctx context.Context, username string, em
 }
 
 // Mutation returns graph.MutationResolver implementation.
-func (r *resolver) Mutation() graph.MutationResolver { return &mutationResolver{r} }
+func (r *Resolver) Mutation() graph.MutationResolver { return &mutationResolver{r} }
 
-type mutationResolver struct{ *resolver }
+type mutationResolver struct{ *Resolver }

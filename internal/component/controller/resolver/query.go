@@ -8,7 +8,7 @@ import (
 	"context"
 	"fmt"
 
-	graph "github.com/nggrjh/travel-planner/internal/infrastructure/server"
+	"github.com/nggrjh/travel-planner/internal/infrastructure/server/graph"
 )
 
 // Ping is the resolver for the ping field.
@@ -22,6 +22,6 @@ func (r *queryResolver) Greet(ctx context.Context, name string) (string, error) 
 }
 
 // Query returns graph.QueryResolver implementation.
-func (r *resolver) Query() graph.QueryResolver { return &queryResolver{r} }
+func (r *Resolver) Query() graph.QueryResolver { return &queryResolver{r} }
 
-type queryResolver struct{ *resolver }
+type queryResolver struct{ *Resolver }
