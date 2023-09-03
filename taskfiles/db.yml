@@ -12,7 +12,7 @@ vars:
 tasks:
   wait:
     cmds:
-      - sleep 2
+      - sleep 3
 
   test:setup:
     deps:
