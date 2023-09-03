@@ -6,7 +6,13 @@ import (
 	"os/signal"
 	"syscall"
 
+	gHandler "github.com/99designs/gqlgen/graphql/handler"
+	"github.com/labstack/echo/v4"
+
 	"github.com/nggrjh/travel-planner/internal/component/controller/handler"
+	"github.com/nggrjh/travel-planner/internal/component/controller/resolver"
+	"github.com/nggrjh/travel-planner/internal/component/repository/users"
+	"github.com/nggrjh/travel-planner/internal/component/usecase"
 	"github.com/nggrjh/travel-planner/internal/infrastructure/dependency"
 	"github.com/nggrjh/travel-planner/internal/infrastructure/server"
 )
@@ -27,15 +33,17 @@ func New() (*app, error) {
 		return nil, err
 	}
 
-	queryHandler, err := handler.NewQuery(dbConn)
-	if err != nil {
-		log.Fatal(err)
+	c := server.Config{
+		Resolvers:  resolver.NewResolver(usecase.NewUserRegistration(18, users.New(dbConn))),
+		Directives: server.DirectiveRoot{},
+		Complexity: server.ComplexityRoot{},
 	}
+	h := gHandler.NewDefaultServer(server.NewExecutableSchema(c))
 
 	{ // Endpoints
 		restAPI.GET("/ping", handler.NewPing().Handle())
 
-		restAPI.POST("/graphql", queryHandler.Handle())
+		restAPI.POST("/graphql", echo.WrapHandler(h))
 	}
 
 	return &app{
@@ -50,7 +58,6 @@ func (a *app) Close() {
 }
 
 func (a *app) Start() {
-	
 
 	log.Fatal(a.RestAPI.Start())
 }

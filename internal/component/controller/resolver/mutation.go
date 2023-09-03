@@ -6,7 +6,7 @@ package resolver
 
 import (
 	"context"
-	"fmt"
+	"errors"
 
 	"github.com/nggrjh/travel-planner/internal/component/controller/resolver/model"
 	graph "github.com/nggrjh/travel-planner/internal/infrastructure/server"
@@ -14,10 +14,26 @@ import (
 
 // RegisterUser is the resolver for the registerUser field.
 func (r *mutationResolver) RegisterUser(ctx context.Context, username string, email string, password string) (*model.User, error) {
-	panic(fmt.Errorf("not implemented: RegisterUser - registerUser"))
+	if len(username) < 1 {
+		return nil, errors.New("invalid username")
+	}
+
+	if len(email) < 1 { // TODO: validate email properly
+		return nil, errors.New("invalid email")
+	}
+
+	if len(password) < 1 { // TODO: validate password properly
+		return nil, errors.New("invalid password")
+	}
+
+	// if err := r.usecase.RegisterUser(ctx, username, email, password); err != nil {
+	// 	return nil, err
+	// }
+
+	return &model.User{Username: username, Email: email}, nil
 }
 
 // Mutation returns graph.MutationResolver implementation.
-func (r *Resolver) Mutation() graph.MutationResolver { return &mutationResolver{r} }
+func (r *resolver) Mutation() graph.MutationResolver { return &mutationResolver{r} }
 
-type mutationResolver struct{ *Resolver }
+type mutationResolver struct{ *resolver }

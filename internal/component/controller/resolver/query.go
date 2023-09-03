@@ -13,15 +13,15 @@ import (
 
 // Ping is the resolver for the ping field.
 func (r *queryResolver) Ping(ctx context.Context) (string, error) {
-	panic(fmt.Errorf("not implemented: Ping - ping"))
+	return "PONG!", nil
 }
 
 // Greet is the resolver for the greet field.
 func (r *queryResolver) Greet(ctx context.Context, name string) (string, error) {
-	panic(fmt.Errorf("not implemented: Greet - greet"))
+	return fmt.Sprintf("Hello, %s!", name), nil
 }
 
 // Query returns graph.QueryResolver implementation.
-func (r *Resolver) Query() graph.QueryResolver { return &queryResolver{r} }
+func (r *resolver) Query() graph.QueryResolver { return &queryResolver{r} }
 
-type queryResolver struct{ *Resolver }
+type queryResolver struct{ *resolver }

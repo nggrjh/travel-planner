@@ -22,6 +22,7 @@ type restAPI struct {
 func NewRestAPI() (*restAPI, error) {
 	e := echo.New()
 	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
 
 	return &restAPI{echo: e}, nil
 }

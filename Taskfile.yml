@@ -24,6 +24,7 @@ tasks:
 
   check:
     deps:
+      - stop
       - go:tidy
       - go:test
       - go:lint
