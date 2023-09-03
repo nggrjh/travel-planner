@@ -14,22 +14,31 @@ tasks:
     cmds:
       - sleep 3
 
-  test:setup:
-    deps:
-      - docker:setup
+  test:cleanup:
     cmds:
-      - ./bin/docker-compose -f ./config/test/docker-compose.yml up -d pgtest
-      - task db:wait
+      - ./bin/docker-compose -f ./config/test/docker-compose.yml down
 
   test:cleardata:
+    deps:
+      - test:cleanup
     cmds:
       - rm -rf ./db/mount/data
 
+  test:run:
+    deps:
+      - docker:setup
+      - test:cleanup
+    cmds:
+      - defer: task db:test:cleanup
+      - ./bin/docker-compose -f ./config/test/docker-compose.yml up -d pgtest
+      - task db:wait
+      - docker exec pgtest pg_isready -q || exit 1
+
   test:migrate:
     deps:
-      - test:setup
+      - test:run
     cmds:
-      - docker exec pgtest pg_isready -q || exit 1
+      - defer: task db:test:cleanup
       - ./bin/docker-compose -f ./config/test/docker-compose.yml up migrate
       - docker logs migrate 2>&1 | grep -q "error" && exit 1 || true
 
@@ -37,5 +46,6 @@ tasks:
     deps:
       - test:migrate
     cmds:
+      - defer: task db:test:cleanup
       - ./bin/docker-compose -f ./config/test/docker-compose.yml up pgtap
-      - ./bin/docker-compose -f ./config/test/docker-compose.yml down
+      - docker logs pgtap 2>&1 | grep -q "FAIL" && exit 1 || true
