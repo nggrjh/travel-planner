@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION create_user(username_in VARCHAR,
+CREATE OR REPLACE FUNCTION create_user(
     email_in VARCHAR,
     password_in VARCHAR)
     RETURNS VOID
@@ -7,9 +7,10 @@ $$
 
 DECLARE
    constraint_name text;
+
 BEGIN
-   INSERT INTO users(username, email, password)
-      VALUES (username_in, email_in, password_in);
+   INSERT INTO users(email, password)
+      VALUES (email_in, password_in);
 EXCEPTION
    WHEN unique_violation THEN
       -- Get the name of the violated constraint from the error message
