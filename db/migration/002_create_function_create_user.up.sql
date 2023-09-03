@@ -1,8 +1,9 @@
 CREATE OR REPLACE FUNCTION create_user(
-    email_in VARCHAR,
-    password_in VARCHAR)
-    RETURNS VOID
-    LANGUAGE plpgsql AS
+   email_in VARCHAR,
+   password_in VARCHAR
+)
+   RETURNS VOID
+   LANGUAGE plpgsql AS
 $$
 
 DECLARE
