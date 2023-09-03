@@ -35,15 +35,15 @@ func (m *MockCreateUser) EXPECT() *MockCreateUserMockRecorder {
 }
 
 // Create mocks base method.
-func (m *MockCreateUser) Create(ctx context.Context, username, email, password string) error {
+func (m *MockCreateUser) Create(ctx context.Context, email, password string) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Create", ctx, username, email, password)
+	ret := m.ctrl.Call(m, "Create", ctx, email, password)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // Create indicates an expected call of Create.
-func (mr *MockCreateUserMockRecorder) Create(ctx, username, email, password interface{}) *gomock.Call {
+func (mr *MockCreateUserMockRecorder) Create(ctx, email, password interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockCreateUser)(nil).Create), ctx, username, email, password)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockCreateUser)(nil).Create), ctx, email, password)
 }

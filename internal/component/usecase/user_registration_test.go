@@ -18,12 +18,10 @@ func Test_userRegistration_RegisterUser(t *testing.T) {
 		hashCost int
 	}
 	type args struct {
-		username string
 		email    string
 		password string
 	}
 	type expectCreateUser struct {
-		username string
 		email    string
 		password string
 		rErr     error
@@ -41,14 +39,12 @@ func Test_userRegistration_RegisterUser(t *testing.T) {
 				hashCost: 18,
 			},
 			args: args{
-				username: "hariiniindah",
 				email:    "hariiniindah@gmail.com",
 				password: "hariiniindah",
 			},
 			wantErr: assert.Error,
 
 			expectCreateUser: &expectCreateUser{
-				username: "hariiniindah",
 				email:    "hariiniindah@gmail.com",
 				password: "hariiniindah",
 				rErr:     assert.AnError,
@@ -60,14 +56,12 @@ func Test_userRegistration_RegisterUser(t *testing.T) {
 				hashCost: 18,
 			},
 			args: args{
-				username: "hariiniindah",
 				email:    "hariiniindah@gmail.com",
 				password: "hariiniindah",
 			},
 			wantErr: assert.NoError,
 
 			expectCreateUser: &expectCreateUser{
-				username: "hariiniindah",
 				email:    "hariiniindah@gmail.com",
 				password: "hariiniindah",
 				rErr:     nil,
@@ -86,15 +80,15 @@ func Test_userRegistration_RegisterUser(t *testing.T) {
 
 			if e := tt.expectCreateUser; e != nil {
 				mockCreateUser.EXPECT().
-					Create(gomock.Any(), e.username, e.email, gomock.Any()).
-					Do(func(_ context.Context, _, _, password string) {
+					Create(gomock.Any(), e.email, gomock.Any()).
+					Do(func(_ context.Context, _, password string) {
 						assert.Nil(t, bcrypt.CompareHashAndPassword([]byte(password), []byte(e.password)))
 					}).
 					Return(e.rErr)
 			}
 
 			u := usecase.NewUserRegistration(tt.fields.hashCost, mockCreateUser)
-			tt.wantErr(t, u.RegisterUser(context.Background(), tt.args.username, tt.args.email, tt.args.password), "usecase.RegisterUser()")
+			tt.wantErr(t, u.RegisterUser(context.Background(), tt.args.email, tt.args.password), "usecase.RegisterUser()")
 		})
 	}
 }

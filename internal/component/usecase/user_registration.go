@@ -16,11 +16,11 @@ func NewUserRegistration(hashCost int, createUser repository.CreateUser) *userRe
 	return &userRegistration{createUser: createUser}
 }
 
-func (u *userRegistration) RegisterUser(ctx context.Context, username, email, password string) error {
+func (u *userRegistration) RegisterUser(ctx context.Context, email, password string) error {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), u.hashCost)
 	if err != nil {
 		return err
 	}
 
-	return u.createUser.Create(ctx, username, email, string(hashedPassword))
+	return u.createUser.Create(ctx, email, string(hashedPassword))
 }

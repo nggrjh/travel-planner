@@ -35,15 +35,15 @@ func (m *MockRegisterUser) EXPECT() *MockRegisterUserMockRecorder {
 }
 
 // RegisterUser mocks base method.
-func (m *MockRegisterUser) RegisterUser(ctx context.Context, username, email, password string) error {
+func (m *MockRegisterUser) RegisterUser(ctx context.Context, email, password string) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "RegisterUser", ctx, username, email, password)
+	ret := m.ctrl.Call(m, "RegisterUser", ctx, email, password)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // RegisterUser indicates an expected call of RegisterUser.
-func (mr *MockRegisterUserMockRecorder) RegisterUser(ctx, username, email, password interface{}) *gomock.Call {
+func (mr *MockRegisterUserMockRecorder) RegisterUser(ctx, email, password interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RegisterUser", reflect.TypeOf((*MockRegisterUser)(nil).RegisterUser), ctx, username, email, password)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RegisterUser", reflect.TypeOf((*MockRegisterUser)(nil).RegisterUser), ctx, email, password)
 }

@@ -16,7 +16,6 @@ import (
 func Test_users_Create(t *testing.T) {
 	t.Parallel()
 	type args struct {
-		username string
 		email    string
 		password string
 	}
@@ -31,29 +30,8 @@ func Test_users_Create(t *testing.T) {
 		expectExec *expectExect
 	}{
 		"should_return_error__" +
-			"when_Exec_returns_username_constraint_error": {
-			args: args{
-				username: "hariiniindah",
-				email:    "hariiniindah@gmail.com",
-				password: "hariiniindah",
-			},
-			wantErr: func(tt assert.TestingT, err error, i ...interface{}) bool {
-				return assert.ErrorIs(t, err, repository.ErrUsernameAlreadyExists, i...)
-			},
-
-			expectExec: &expectExect{
-				args: []any{
-					"hariiniindah",
-					"hariiniindah@gmail.com",
-					"hariiniindah",
-				},
-				rErr: errors.New("constraint uidx_users_username violated"),
-			},
-		},
-		"should_return_error__" +
 			"when_Exec_returns_email_constraint_error": {
 			args: args{
-				username: "hariiniindah",
 				email:    "hariiniindah@gmail.com",
 				password: "hariiniindah",
 			},
@@ -63,7 +41,6 @@ func Test_users_Create(t *testing.T) {
 
 			expectExec: &expectExect{
 				args: []any{
-					"hariiniindah",
 					"hariiniindah@gmail.com",
 					"hariiniindah",
 				},
@@ -73,7 +50,6 @@ func Test_users_Create(t *testing.T) {
 		"should_return_error__" +
 			"when_Exec_returns_error": {
 			args: args{
-				username: "hariiniindah",
 				email:    "hariiniindah@gmail.com",
 				password: "hariiniindah",
 			},
@@ -81,7 +57,6 @@ func Test_users_Create(t *testing.T) {
 
 			expectExec: &expectExect{
 				args: []any{
-					"hariiniindah",
 					"hariiniindah@gmail.com",
 					"hariiniindah",
 				},
@@ -91,7 +66,6 @@ func Test_users_Create(t *testing.T) {
 		"should_return_nil_error__" +
 			"when_Exec_returns_nil_error": {
 			args: args{
-				username: "hariiniindah",
 				email:    "hariiniindah@gmail.com",
 				password: "hariiniindah",
 			},
@@ -99,7 +73,6 @@ func Test_users_Create(t *testing.T) {
 
 			expectExec: &expectExect{
 				args: []any{
-					"hariiniindah",
 					"hariiniindah@gmail.com",
 					"hariiniindah",
 				},
@@ -119,12 +92,12 @@ func Test_users_Create(t *testing.T) {
 
 			if e := tt.expectExec; e != nil {
 				mockDatabase.EXPECT().ExecContext(gomock.Any(), `
-SELECT create_user($1, $2, $3);
+SELECT create_user($1, $2);
 `, e.args...).Return(nil, e.rErr)
 			}
 
 			u := users.New(mockDatabase)
-			tt.wantErr(t, u.Create(context.Background(), tt.args.username, tt.args.email, tt.args.password), "users.Create()")
+			tt.wantErr(t, u.Create(context.Background(), tt.args.email, tt.args.password), "users.Create()")
 		})
 	}
 }

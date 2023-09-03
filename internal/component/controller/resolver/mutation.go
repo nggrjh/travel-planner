@@ -13,11 +13,7 @@ import (
 )
 
 // RegisterUser is the resolver for the registerUser field.
-func (r *mutationResolver) RegisterUser(ctx context.Context, username string, email string, password string) (*model.User, error) {
-	if len(username) < 1 {
-		return nil, errors.New("invalid username")
-	}
-
+func (r *mutationResolver) RegisterUser(ctx context.Context, email string, password string) (*model.User, error) {
 	if len(email) < 1 { // TODO: validate email properly
 		return nil, errors.New("invalid email")
 	}
@@ -26,11 +22,11 @@ func (r *mutationResolver) RegisterUser(ctx context.Context, username string, em
 		return nil, errors.New("invalid password")
 	}
 
-	if err := r.userRegistration.RegisterUser(ctx, username, email, password); err != nil {
+	if err := r.userRegistration.RegisterUser(ctx, email, password); err != nil {
 		return nil, err
 	}
 
-	return &model.User{Username: username, Email: email}, nil
+	return &model.User{Email: email}, nil
 }
 
 // Mutation returns graph.MutationResolver implementation.
