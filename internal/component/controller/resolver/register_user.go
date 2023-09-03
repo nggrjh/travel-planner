@@ -1,14 +1,13 @@
 package resolver
 
 import (
-	"context"
 	"errors"
 
 	"github.com/graphql-go/graphql"
 	"github.com/nggrjh/travel-planner/internal/component/usecase"
 )
 
-type registerUser struct{
+type registerUser struct {
 	usecase usecase.RegisterUser
 }
 
@@ -33,7 +32,7 @@ func (r *registerUser) Field() *graphql.Field {
 }
 
 func (r *registerUser) resolve(p graphql.ResolveParams) (interface{}, error) {
-	ctx := context.Background()
+	// ctx := context.Background()
 
 	username := p.Args["username"].(string)
 	if len(username) < 1 {
@@ -50,9 +49,9 @@ func (r *registerUser) resolve(p graphql.ResolveParams) (interface{}, error) {
 		return nil, errors.New("invalid password")
 	}
 
-	if err := r.usecase.RegisterUser(ctx, username, email, password); err != nil {
-		return nil, err
-	}
+	// if err := r.usecase.RegisterUser(ctx, username, email, password); err != nil {
+	// 	return nil, err
+	// }
 
 	return map[string]string{"username": username, "email": email}, nil
 }
