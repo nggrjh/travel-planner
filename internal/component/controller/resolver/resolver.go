@@ -7,9 +7,13 @@ import "github.com/nggrjh/travel-planner/internal/component/usecase"
 // It serves as dependency injection for your app, add any dependencies you require here.
 
 type Resolver struct {
-	registration usecase.RegisterUser
+	userRegistration usecase.RegisterUser
 }
 
-func NewResolver(registration usecase.RegisterUser) *Resolver {
-	return &Resolver{registration: registration}
+func New(
+	userRegistration usecase.RegisterUser,
+) *Resolver {
+	return &Resolver{
+		userRegistration: userRegistration,
+	}
 }

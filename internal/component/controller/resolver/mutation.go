@@ -26,9 +26,9 @@ func (r *mutationResolver) RegisterUser(ctx context.Context, username string, em
 		return nil, errors.New("invalid password")
 	}
 
-	// if err := r.usecase.RegisterUser(ctx, username, email, password); err != nil {
-	// 	return nil, err
-	// }
+	if err := r.userRegistration.RegisterUser(ctx, username, email, password); err != nil {
+		return nil, err
+	}
 
 	return &model.User{Username: username, Email: email}, nil
 }

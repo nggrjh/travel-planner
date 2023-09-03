@@ -6,10 +6,10 @@ import (
 	"os/signal"
 	"syscall"
 
-	graphHandler "github.com/99designs/gqlgen/graphql/handler"
+	"github.com/99designs/gqlgen/graphql/handler"
+	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/labstack/echo/v4"
 
-	"github.com/nggrjh/travel-planner/internal/component/controller/handler"
 	"github.com/nggrjh/travel-planner/internal/component/controller/resolver"
 	"github.com/nggrjh/travel-planner/internal/component/repository/users"
 	"github.com/nggrjh/travel-planner/internal/component/usecase"
@@ -35,15 +35,14 @@ func New() (*app, error) {
 	}
 
 	graphConfig := graph.Config{
-		Resolvers:  resolver.NewResolver(usecase.NewUserRegistration(18, users.New(dbConn))),
+		Resolvers:  resolver.New(usecase.NewUserRegistration(18, users.New(dbConn))),
 		Directives: graph.DirectiveRoot{},
 		Complexity: graph.ComplexityRoot{},
 	}
 
-	{ // Endpoints
-		restAPI.GET("/ping", handler.NewPing().Handle())
-
-		restAPI.POST("/graphql", echo.WrapHandler(graphHandler.NewDefaultServer(graph.NewExecutableSchema(graphConfig))))
+	{
+		restAPI.POST("/graphql", echo.WrapHandler(handler.NewDefaultServer(graph.NewExecutableSchema(graphConfig))))
+		restAPI.GET("/playground", echo.WrapHandler(playground.Handler("GraphQL Playground", "/graphql")))
 	}
 
 	return &app{
