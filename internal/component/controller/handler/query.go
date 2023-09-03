@@ -7,19 +7,23 @@ import (
 	"github.com/labstack/echo/v4"
 
 	"github.com/nggrjh/travel-planner/internal/component/controller/resolver"
+	"github.com/nggrjh/travel-planner/internal/component/repository/users"
+	"github.com/nggrjh/travel-planner/internal/component/usecase"
+	"github.com/nggrjh/travel-planner/internal/infrastructure/database"
 )
 
 type query struct {
 	schema graphql.Schema
 }
 
-func NewQuery() (*query, error) {
+func NewQuery(db database.Database) (*query, error) {
 	pingResolver := resolver.NewPing()
 	greetResolver := resolver.NewGreet()
+	registerUserResolver := resolver.NewRegisterUser(usecase.NewUserRegistration(18, users.New(db)))
 
 	rootQuery := graphql.NewObject(
 		graphql.ObjectConfig{
-			Name: "RootQuery",
+			Name: "Query",
 			Fields: graphql.Fields{
 				pingResolver.Name():  pingResolver.Field(),
 				greetResolver.Name(): greetResolver.Field(),
@@ -27,8 +31,18 @@ func NewQuery() (*query, error) {
 		},
 	)
 
+	rootMutation := graphql.NewObject(
+		graphql.ObjectConfig{
+			Name: "Mutation",
+			Fields: graphql.Fields{
+				registerUserResolver.Name(): registerUserResolver.Field(),
+			},
+		},
+	)
+
 	schema, err := graphql.NewSchema(graphql.SchemaConfig{
-		Query: rootQuery,
+		Query:    rootQuery,
+		Mutation: rootMutation,
 	})
 	if err != nil {
 		return nil, err

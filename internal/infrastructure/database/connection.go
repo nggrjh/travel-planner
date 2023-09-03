@@ -1,4 +1,4 @@
-package infrastructure
+package database
 
 import (
 	"context"
@@ -10,7 +10,7 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
-//go:generate mockgen -source=database.go -destination=mock/database.go -package=mock
+//go:generate mockgen -source=connection.go -destination=mock/connection.go -package=mock
 
 type Database interface {
 	PrepareContext(ctx context.Context, query string) (*sql.Stmt, error)

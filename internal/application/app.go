@@ -6,21 +6,22 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/nggrjh/travel-planner/internal/infrastructure"
+	"github.com/nggrjh/travel-planner/internal/infrastructure/database"
+	"github.com/nggrjh/travel-planner/internal/infrastructure/restapi"
 )
 
 type app struct {
-	RestAPI  infrastructure.Rest
-	Database infrastructure.Database
+	RestAPI  restapi.Rest
+	Database database.Database
 }
 
 func New() (*app, error) {
-	dbConn, err := infrastructure.NewDatabaseConnection()
+	dbConn, err := database.NewDatabaseConnection()
 	if err != nil {
 		return nil, err
 	}
 
-	restAPI, err := infrastructure.NewRestAPI()
+	restAPI, err := restapi.NewRestAPI()
 	if err != nil {
 		return nil, err
 	}

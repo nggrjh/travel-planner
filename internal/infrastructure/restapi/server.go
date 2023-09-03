@@ -1,4 +1,4 @@
-package infrastructure
+package restapi
 
 import (
 	"log"
@@ -19,7 +19,7 @@ type rest struct {
 }
 
 func NewRestAPI() (*rest, error) {
-	queryHandler, err := handler.NewQuery()
+	queryHandler, err := handler.NewQuery(nil) // FIXME: fix project structure soon.
 	if err != nil {
 		return nil, err
 	}
