@@ -6,24 +6,36 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/nggrjh/travel-planner/internal/infrastructure/database"
-	"github.com/nggrjh/travel-planner/internal/infrastructure/restapi"
+	"github.com/nggrjh/travel-planner/internal/component/controller/handler"
+	"github.com/nggrjh/travel-planner/internal/infrastructure/dependency"
+	"github.com/nggrjh/travel-planner/internal/infrastructure/server"
 )
 
 type app struct {
-	RestAPI  restapi.Rest
-	Database database.Database
+	RestAPI  server.RestAPI
+	Database dependency.Database
 }
 
 func New() (*app, error) {
-	dbConn, err := database.NewDatabaseConnection()
+	dbConn, err := dependency.NewDatabaseConnection()
 	if err != nil {
 		return nil, err
 	}
 
-	restAPI, err := restapi.NewRestAPI()
+	restAPI, err := server.NewRestAPI()
 	if err != nil {
 		return nil, err
+	}
+
+	queryHandler, err := handler.NewQuery(dbConn)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	{ // Endpoints
+		restAPI.GET("/ping", handler.NewPing().Handle())
+
+		restAPI.POST("/graphql", queryHandler.Handle())
 	}
 
 	return &app{
@@ -38,6 +50,8 @@ func (a *app) Close() {
 }
 
 func (a *app) Start() {
+	
+
 	log.Fatal(a.RestAPI.Start())
 }
 

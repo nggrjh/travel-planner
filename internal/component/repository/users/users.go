@@ -1,11 +1,11 @@
 package users
 
-import "github.com/nggrjh/travel-planner/internal/infrastructure/database"
+import "github.com/nggrjh/travel-planner/internal/infrastructure/dependency"
 
 type users struct {
-	db database.Database
+	db dependency.Database
 }
 
-func New(db database.Database) *users {
+func New(db dependency.Database) *users {
 	return &users{db: db}
 }

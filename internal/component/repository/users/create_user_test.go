@@ -10,7 +10,7 @@ import (
 
 	"github.com/nggrjh/travel-planner/internal/component/repository"
 	"github.com/nggrjh/travel-planner/internal/component/repository/users"
-	"github.com/nggrjh/travel-planner/internal/infrastructure/database/mock"
+	"github.com/nggrjh/travel-planner/internal/infrastructure/dependency/mock"
 )
 
 func Test_users_Create(t *testing.T) {

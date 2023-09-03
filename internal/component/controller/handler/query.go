@@ -9,14 +9,14 @@ import (
 	"github.com/nggrjh/travel-planner/internal/component/controller/resolver"
 	"github.com/nggrjh/travel-planner/internal/component/repository/users"
 	"github.com/nggrjh/travel-planner/internal/component/usecase"
-	"github.com/nggrjh/travel-planner/internal/infrastructure/database"
+	"github.com/nggrjh/travel-planner/internal/infrastructure/dependency"
 )
 
 type query struct {
 	schema graphql.Schema
 }
 
-func NewQuery(db database.Database) (*query, error) {
+func NewQuery(db dependency.Database) (*query, error) {
 	pingResolver := resolver.NewPing()
 	greetResolver := resolver.NewGreet()
 	registerUserResolver := resolver.NewRegisterUser(usecase.NewUserRegistration(18, users.New(db)))
