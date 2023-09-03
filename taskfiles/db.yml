@@ -3,26 +3,39 @@ version: "3"
 includes:
   docker: docker.yml
 
+vars:
+  DB_SCHEMA: pgtest
+  DB_USER: pgtest
+  DB_PASS: pgtest
+  TEST_FILES: test/* -v
+
 tasks:
   wait:
     cmds:
       - sleep 2
 
-  test:cleanup:
-    cmds:
-      - rm -rf ./db/mount
-
-  test:
-    vars:
-      DB_SCHEMA: pgtest
-      DB_USER: pgtest
-      DB_PASS: pgtest
-      TEST_FILES: test/* -v
+  test:setup:
     deps:
       - docker:setup
     cmds:
       - ./bin/docker-compose -f ./config/test/docker-compose.yml up -d pgtest
       - task db:wait
+
+  test:cleardata:
+    cmds:
+      - rm -rf ./db/mount/data
+
+  test:migrate:
+    deps:
+      - test:setup
+    cmds:
+      - docker exec pgtest pg_isready -q || exit 1
       - ./bin/docker-compose -f ./config/test/docker-compose.yml up migrate
+      - docker logs migrate 2>&1 | grep -q "error" && exit 1 || true
+
+  test:
+    deps:
+      - test:migrate
+    cmds:
       - ./bin/docker-compose -f ./config/test/docker-compose.yml up pgtap
       - ./bin/docker-compose -f ./config/test/docker-compose.yml down
