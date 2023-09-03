@@ -8,14 +8,10 @@ import (
 
 type ping struct{}
 
-func NewPing() *ping {
-	return &ping{}
-}
+func NewPing() *ping { return &ping{} }
 
-func (h *ping) Handle() echo.HandlerFunc {
-	return h.handle
-}
+func (h *ping) Handle() echo.HandlerFunc { return h.handle }
 
 func (h *ping) handle(c echo.Context) error {
-	return c.String(http.StatusOK, "PONG!")
+	return c.String(http.StatusOK, "Pong!")
 }

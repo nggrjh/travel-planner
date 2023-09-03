@@ -58,7 +58,6 @@ func (a *app) Close() {
 }
 
 func (a *app) Start() {
-
 	log.Fatal(a.RestAPI.Start())
 }
 

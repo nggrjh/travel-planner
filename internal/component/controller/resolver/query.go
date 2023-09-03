@@ -13,7 +13,7 @@ import (
 
 // Ping is the resolver for the ping field.
 func (r *queryResolver) Ping(ctx context.Context) (string, error) {
-	return "PONG!", nil
+	return "Pong!", nil
 }
 
 // Greet is the resolver for the greet field.
