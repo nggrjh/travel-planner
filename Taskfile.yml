@@ -4,6 +4,7 @@ includes:
   db: taskfiles/db.yml
   docker: taskfiles/docker.yml
   go: taskfiles/go.yml
+  graph: taskfiles/graph.yml
 
 tasks:
   run:

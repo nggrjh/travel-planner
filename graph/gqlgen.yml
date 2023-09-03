@@ -1,0 +1,16 @@
+model:
+  filename: internal/component/controller/resolver/model/model.go
+  package: model
+
+schema:
+  - graph/*.graphql
+
+exec:
+  filename: internal/infrastructure/server/graph.go
+  package: server
+
+resolver:
+  layout: follow-schema
+  dir: internal/component/controller/resolver
+  package: resolver
+  filename_template: "{name}.go"
