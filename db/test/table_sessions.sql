@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT plan(23);
+SELECT plan(24);
 
 SELECT has_table('sessions');
 
@@ -33,5 +33,7 @@ SELECT col_type_is('sessions', 'last_updated_at', 'timestamp without time zone')
 
 SELECT index_is_unique('sessions', 'uidx_sessions_user_id');
 SELECT has_index('sessions', 'idx_sessions_token');
+
+SELECT has_trigger('sessions', 'log_session');
 
 ROLLBACK;
