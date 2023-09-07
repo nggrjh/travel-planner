@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT plan(19);
+SELECT plan(25);
 
 SELECT has_table('sessions_history');
 
@@ -27,5 +27,13 @@ SELECT col_not_null('sessions_history', 'expires_at');
 SELECT has_column('sessions_history', 'created_at');
 SELECT col_type_is('sessions_history', 'created_at', 'timestamp without time zone');
 SELECT col_default_is('sessions_history', 'created_at', 'now()');
+
+SELECT has_column('sessions_history', 'operation');
+SELECT col_type_is('sessions_history', 'operation', 'character varying');
+SELECT col_not_null('sessions_history', 'operation');
+
+SELECT has_column('sessions_history', 'modified_by');
+SELECT col_type_is('sessions_history', 'modified_by', 'character varying');
+SELECT col_not_null('sessions_history', 'modified_by');
 
 ROLLBACK;

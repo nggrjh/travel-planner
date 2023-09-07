@@ -4,5 +4,7 @@ CREATE TABLE IF NOT EXISTS sessions_history (
     token UUID NOT NULL,
     refreshed_at TIMESTAMP NOT NULL,
     expires_at TIMESTAMP NOT NULL,
-    created_at TIMESTAMP DEFAULT NOW()
+    created_at TIMESTAMP DEFAULT NOW(),
+    operation VARCHAR NOT NULL,
+    modified_by VARCHAR NOT NULL
 );
