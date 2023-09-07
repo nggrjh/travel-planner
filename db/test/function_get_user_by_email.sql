@@ -1,4 +1,5 @@
 BEGIN;
+
 SELECT plan(2);
 
 -- data does not exist

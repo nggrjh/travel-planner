@@ -1,4 +1,5 @@
 BEGIN;
+
 SELECT plan(4);
 
 SELECT is_empty(

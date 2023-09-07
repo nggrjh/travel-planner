@@ -1,4 +1,5 @@
 BEGIN;
+
 SELECT plan(23);
 
 SELECT has_table('sessions');

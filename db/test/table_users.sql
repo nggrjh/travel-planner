@@ -1,4 +1,5 @@
 BEGIN;
+
 SELECT plan(16);
 
 SELECT has_table('users');
