@@ -14,4 +14,5 @@ BEGIN
       FROM users
       WHERE email = email_in;
 END;
+
 $$;

@@ -23,4 +23,5 @@ EXCEPTION
       -- Handle other exceptions if necessary
       RAISE;
 END;
+
 $$;
